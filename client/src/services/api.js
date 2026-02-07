@@ -13,6 +13,11 @@ class ApiService {
             credentials: 'include'
         };
 
+        const token = localStorage.getItem('auth_token');
+        if (token) {
+            config.headers['Authorization'] = `Bearer ${token}`;
+        }
+
         const response = await fetch(url, config);
 
         if (!response.ok) {

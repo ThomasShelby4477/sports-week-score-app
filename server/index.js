@@ -31,7 +31,7 @@ app.use(helmet({
 // Rate Limiting
 const apiLimiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 100, // Limit each IP to 100 requests per windowMs
+    max: 300, // Limit each IP to 300 requests per windowMs (Relaxed for dashboard data loading)
     standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
     legacyHeaders: false, // Disable the `X-RateLimit-*` headers
     message: { error: 'Too many requests, please try again later.' }
@@ -39,7 +39,7 @@ const apiLimiter = rateLimit({
 
 const authLimiter = rateLimit({
     windowMs: 60 * 60 * 1000, // 1 hour
-    max: 10, // Limit each IP to 10 login attempts per hour
+    max: 50, // Limit each IP to 50 login attempts per hour (Relaxed for troubleshooting)
     message: { error: 'Too many login attempts, please try again later.' }
 });
 

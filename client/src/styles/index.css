@@ -205,41 +205,50 @@ a {
   justify-content: center;
   gap: var(--space-sm);
   padding: var(--space-sm) var(--space-md);
-  font-size: 0.875rem;
+  font-family: var(--font-pixel);
+  font-size: 0.75rem;
   font-weight: 600;
-  border: none;
-  border-radius: var(--radius-md);
+  border: 2px solid transparent;
+  border-radius: var(--radius-sm);
   cursor: pointer;
   transition: all var(--transition-fast);
   text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .btn-primary {
   background: var(--accent);
-  color: white;
+  color: var(--bg-dark);
+  box-shadow: 0 0 10px rgba(34, 211, 238, 0.3);
 }
 
 .btn-primary:hover {
   background: var(--accent-light);
+  box-shadow: 0 0 15px var(--accent-glow);
+  transform: translateY(-1px);
 }
 
 .btn-secondary {
   background: var(--bg-elevated);
   color: var(--text-primary);
+  border: 1px solid var(--text-muted);
 }
 
 .btn-secondary:hover {
   background: var(--bg-card-hover);
+  border-color: var(--text-primary);
 }
 
 .btn-gold {
   background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
   color: var(--bg-primary);
+  box-shadow: 0 0 10px rgba(251, 191, 36, 0.3);
 }
 
 .btn-gold:hover {
   transform: translateY(-1px);
-  box-shadow: var(--shadow-md);
+  box-shadow: 0 0 15px var(--shadow-glow-gold);
 }
 
 .btn-icon {
@@ -250,7 +259,7 @@ a {
 
 .btn-sm {
   padding: var(--space-xs) var(--space-sm);
-  font-size: 0.75rem;
+  font-size: 0.625rem;
 }
 
 /* ===== Cards ===== */
@@ -807,16 +816,23 @@ a {
   align-items: center;
   gap: var(--space-xs);
   background: none;
-  border: none;
+  border: 1px solid transparent;
+  /* Prepare for border on hover */
+  border-radius: var(--radius-sm);
   color: var(--text-secondary);
-  font-size: 0.875rem;
+  font-family: var(--font-pixel);
+  font-size: 0.75rem;
   cursor: pointer;
   padding: var(--space-sm);
   margin-left: calc(var(--space-sm) * -1);
+  text-transform: uppercase;
+  transition: all var(--transition-fast);
 }
 
 .back-btn:hover {
-  color: var(--text-primary);
+  color: var(--accent);
+  background: rgba(30, 41, 59, 0.5);
+  border-color: var(--bg-elevated);
 }
 
 .page-title {
@@ -1300,20 +1316,27 @@ a {
   display: flex;
   align-items: center;
   gap: var(--space-xs);
-  background: rgba(30, 41, 59, 0.9);
-  border: 1px solid var(--bg-elevated);
-  color: var(--text-primary);
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid var(--accent);
+  color: var(--text-cyan);
   padding: var(--space-sm) var(--space-md);
-  border-radius: var(--radius-md);
-  font-size: 0.75rem;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-pixel);
+  font-size: 0.625rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
   cursor: pointer;
   transition: all var(--transition-fast);
+  box-shadow: 0 0 5px rgba(34, 211, 238, 0.1);
+  text-decoration: none;
 }
 
 .nav-arrow:hover {
-  background: var(--bg-elevated);
-  border-color: var(--accent);
-  color: var(--accent);
+  background: rgba(34, 211, 238, 0.1);
+  border-color: var(--accent-light);
+  color: var(--accent-light);
+  box-shadow: 0 0 10px var(--accent-glow);
+  transform: translateY(-1px);
 }
 
 /* ===== Day Badge - Stadium Style ===== */

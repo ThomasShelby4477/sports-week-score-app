@@ -36,7 +36,7 @@ app.get('/api/sse', (req, res) => {
     res.setHeader('Content-Type', 'text/event-stream');
     res.setHeader('Cache-Control', 'no-cache');
     res.setHeader('Connection', 'keep-alive');
-    res.setHeader('Access-Control-Allow-Origin', '*');
+    // res.setHeader('Access-Control-Allow-Origin', '*'); // Handled by CORS middleware
 
     // Send initial connection message
     res.write('data: {"type":"connected"}\n\n');
@@ -85,7 +85,7 @@ app.use((err, req, res, next) => {
 app.listen(PORT, () => {
     console.log(`
 ╔═══════════════════════════════════════════════════════════╗
-║ 🏆 Sports Week Score App Server (API ONLY - AUTH FIX v2) 🏆 ║
+║ 🏆 Sports Week Score App Server (API ONLY - CORS FIX v3) 🏆 ║
 ╠═══════════════════════════════════════════════════════════╣
 ║  Server running at: http://localhost:${PORT}                 ║
 ║  API Base URL:      http://localhost:${PORT}/api             ║

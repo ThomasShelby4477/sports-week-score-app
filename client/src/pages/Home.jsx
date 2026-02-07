@@ -131,7 +131,7 @@ function Home() {
                 padding: 'var(--space-md)',
                 borderTop: '1px solid var(--bg-elevated)'
             }}>
-                KREEDA STADIUM SYSTEMS
+                Developed by Vaibhav Yadav
             </div>
         </div>
     );

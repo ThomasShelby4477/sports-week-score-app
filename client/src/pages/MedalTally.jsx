@@ -295,7 +295,7 @@ function MedalTally() {
                 justifyContent: 'center',
                 marginTop: 'var(--space-lg)'
             }}>
-                KREEDA STADIUM SYSTEMS
+                Developed by Vaibhav Yadav
             </div>
         </div>
     );

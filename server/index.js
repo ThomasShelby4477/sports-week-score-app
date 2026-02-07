@@ -17,6 +17,9 @@ const __dirname = dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+// Trust proxy for Render/Vercel (Required for Secure cookies behind load balancer)
+app.set('trust proxy', 1);
+
 // Middleware
 app.use(cors({
     origin: ['http://localhost:5173', 'http://localhost:3000', 'https://sports-week-score-app.vercel.app', process.env.FRONTEND_URL].filter(Boolean),

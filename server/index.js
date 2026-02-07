@@ -85,7 +85,7 @@ app.use((err, req, res, next) => {
 app.listen(PORT, () => {
     console.log(`
 ╔═══════════════════════════════════════════════════════════╗
-║     🏆 Sports Week Score App Server (API ONLY) 🏆         ║
+║ 🏆 Sports Week Score App Server (API ONLY - AUTH FIX v2) 🏆 ║
 ╠═══════════════════════════════════════════════════════════╣
 ║  Server running at: http://localhost:${PORT}                 ║
 ║  API Base URL:      http://localhost:${PORT}/api             ║

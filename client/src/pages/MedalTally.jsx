@@ -263,7 +263,7 @@ function MedalTally() {
 
                                     {/* Sport & Event */}
                                     <div style={{
-                                        fontSize: '0.625rem',
+                                        fontSize: '0.7rem',
                                         color: 'var(--text-muted)',
                                         display: 'flex',
                                         justifyContent: 'space-between',

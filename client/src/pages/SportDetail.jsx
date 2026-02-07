@@ -94,7 +94,7 @@ function SportDetail() {
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--space-sm)' }}>
                 <span style={{
                     fontFamily: 'var(--font-pixel)',
-                    fontSize: '0.625rem',
+                    fontSize: '0.75rem',
                     color: 'var(--text-cyan)'
                 }}>
                     {event.name}

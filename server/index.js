@@ -25,6 +25,15 @@ app.use(cors({
     origin: ['http://localhost:5173', 'http://localhost:3000', 'https://sports-week-score-app.vercel.app', process.env.FRONTEND_URL].filter(Boolean),
     credentials: true
 }));
+
+// Handle preflight requests for all routes
+app.options('*', cors());
+
+// Debug Middleware: Log Origin
+app.use((req, res, next) => {
+    console.log(`[${new Date().toISOString()}] ${req.method} ${req.url} - Origin: ${req.headers.origin}`);
+    next();
+});
 app.use(express.json());
 app.use(cookieParser());
 
@@ -85,7 +94,7 @@ app.use((err, req, res, next) => {
 app.listen(PORT, () => {
     console.log(`
 ╔═══════════════════════════════════════════════════════════╗
-║ 🏆 Sports Week Score App Server (API ONLY - CORS FIX v3) 🏆 ║
+║ 🏆 Sports Week Score App Server (API ONLY - CORS DEBUG v4) 🏆 ║
 ╠═══════════════════════════════════════════════════════════╣
 ║  Server running at: http://localhost:${PORT}                 ║
 ║  API Base URL:      http://localhost:${PORT}/api             ║

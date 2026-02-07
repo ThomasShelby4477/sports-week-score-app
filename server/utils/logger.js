@@ -2,11 +2,8 @@ import pool from '../db/index.js';
 
 // Log an activity (fire-and-forget, async internally)
 export function logActivity(userId, action, entityType = null, entityId = null, details = null) {
-    // Calculate IST time (UTC+5:30)
-    const now = new Date();
-    const istOffset = 5.5 * 60 * 60 * 1000;
-    const istTime = new Date(now.getTime() + istOffset);
-    const timestamp = istTime.toISOString().replace('T', ' ').substring(0, 19);
+    // Use standard UTC timestamp - Frontend handles conversion to IST
+    const timestamp = new Date().toISOString();
 
     // Fire-and-forget: don't await, let it run in background
     pool.query(`

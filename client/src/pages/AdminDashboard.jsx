@@ -379,7 +379,9 @@ function AdminDashboard() {
                                     }}>
                                         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                                             <span style={{ fontWeight: 600, color: 'var(--text-primary)' }}>{log.action}</span>
-                                            <span style={{ color: 'var(--text-muted)', fontSize: '0.75rem' }}>{new Date(log.timestamp).toLocaleString()}</span>
+                                            <span style={{ color: 'var(--text-muted)', fontSize: '0.75rem' }}>
+                                                {new Date(log.timestamp).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}
+                                            </span>
                                         </div>
                                         <div style={{ color: 'var(--text-muted)' }}>{log.details}</div>
                                         <div style={{ fontSize: '0.75rem', color: 'var(--text-cyan)' }}>by {log.username}</div>

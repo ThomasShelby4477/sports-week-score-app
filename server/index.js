@@ -22,19 +22,15 @@ app.set('trust proxy', 1);
 
 // Middleware
 // MANUAL CORS MIDDLEWARE (The Nuclear Option)
+// MANUAL CORS MIDDLEWARE (The Nuclear Option - Reflect Origin)
 app.use((req, res, next) => {
     const origin = req.headers.origin;
-    const allowedOrigins = [
-        'http://localhost:5173',
-        'http://localhost:3000',
-        'https://sports-week-score-app.vercel.app',
-        process.env.FRONTEND_URL
-    ].filter(Boolean);
 
     // Debug Log (At the very top)
     console.log(`[${new Date().toISOString()}] ${req.method} ${req.url} - Origin: ${origin}`);
 
-    if (allowedOrigins.includes(origin)) {
+    // REFLECT ORIGIN: Allow whatever origin requests access (for debugging)
+    if (origin) {
         res.setHeader('Access-Control-Allow-Origin', origin);
         res.setHeader('Access-Control-Allow-Credentials', 'true');
         res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
@@ -108,7 +104,7 @@ app.use((err, req, res, next) => {
 app.listen(PORT, () => {
     console.log(`
 ╔═══════════════════════════════════════════════════════════╗
-║ 🏆 Sports Week Score App Server (API ONLY - CORS MANUAL v5) 🏆 ║
+║ 🏆 Sports Week Score App Server (API ONLY - CORS REFLECT v6) 🏆 ║
 ╠═══════════════════════════════════════════════════════════╣
 ║  Server running at: http://localhost:${PORT}                 ║
 ║  API Base URL:      http://localhost:${PORT}/api             ║

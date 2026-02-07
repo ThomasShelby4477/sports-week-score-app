@@ -94,8 +94,6 @@ router.post('/', authenticateToken, requireOrganiser, async (req, res) => {
         const resultCount = parseInt(countResult.rows[0].count);
         if (resultCount >= 3) {
             await pool.query("UPDATE events SET status = 'completed' WHERE id = $1", [event_id]);
-        } else {
-            await pool.query("UPDATE events SET status = 'live' WHERE id = $1", [event_id]);
         }
 
         const medalType = position === 1 ? 'Gold' : position === 2 ? 'Silver' : 'Bronze';

@@ -1,6 +1,8 @@
 import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
+import helmet from 'helmet';
+import rateLimit from 'express-rate-limit';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 
@@ -20,6 +22,27 @@ const PORT = process.env.PORT || 3001;
 // Trust proxy for Render/Vercel (Required for Secure cookies behind load balancer)
 app.set('trust proxy', 1);
 
+// Security Headers (Helmet)
+app.use(helmet({
+    crossOriginResourcePolicy: { policy: "cross-origin" }, // Allow cross-origin for images if needed
+    contentSecurityPolicy: false // Disable CSP for API-only to avoid blocking legitimate requests
+}));
+
+// Rate Limiting
+const apiLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100, // Limit each IP to 100 requests per windowMs
+    standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+    legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+    message: { error: 'Too many requests, please try again later.' }
+});
+
+const authLimiter = rateLimit({
+    windowMs: 60 * 60 * 1000, // 1 hour
+    max: 10, // Limit each IP to 10 login attempts per hour
+    message: { error: 'Too many login attempts, please try again later.' }
+});
+
 // Middleware
 app.use(cors({
     origin: ['http://localhost:5173', 'http://localhost:3000', 'https://sports-week-score-app.vercel.app', process.env.FRONTEND_URL].filter(Boolean),
@@ -27,6 +50,9 @@ app.use(cors({
 }));
 app.use(express.json());
 app.use(cookieParser());
+
+// Apply global rate limiter to all API routes
+app.use('/api', apiLimiter);
 
 // SSE clients for real-time updates
 const sseClients = new Set();
@@ -57,7 +83,7 @@ export function broadcast(data) {
 }
 
 // API Routes
-app.use('/api/auth', authRoutes);
+app.use('/api/auth', authLimiter, authRoutes);
 app.use('/api/sports', sportsRoutes);
 app.use('/api/results', resultsRoutes);
 app.use('/api/medals', medalsRoutes);

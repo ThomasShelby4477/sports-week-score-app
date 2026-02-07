@@ -21,29 +21,10 @@ const PORT = process.env.PORT || 3001;
 app.set('trust proxy', 1);
 
 // Middleware
-// MANUAL CORS MIDDLEWARE (The Nuclear Option)
-// MANUAL CORS MIDDLEWARE (The Nuclear Option - Reflect Origin)
-app.use((req, res, next) => {
-    const origin = req.headers.origin;
-
-    // Debug Log (At the very top)
-    console.log(`[${new Date().toISOString()}] ${req.method} ${req.url} - Origin: ${origin}`);
-
-    // REFLECT ORIGIN: Allow whatever origin requests access (for debugging)
-    if (origin) {
-        res.setHeader('Access-Control-Allow-Origin', origin);
-        res.setHeader('Access-Control-Allow-Credentials', 'true');
-        res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
-        res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Accept, Cookie');
-    }
-
-    // Handle Preflight
-    if (req.method === 'OPTIONS') {
-        return res.sendStatus(200);
-    }
-
-    next();
-});
+app.use(cors({
+    origin: ['http://localhost:5173', 'http://localhost:3000', 'https://sports-week-score-app.vercel.app', process.env.FRONTEND_URL].filter(Boolean),
+    credentials: true
+}));
 app.use(express.json());
 app.use(cookieParser());
 
@@ -55,7 +36,7 @@ app.get('/api/sse', (req, res) => {
     res.setHeader('Content-Type', 'text/event-stream');
     res.setHeader('Cache-Control', 'no-cache');
     res.setHeader('Connection', 'keep-alive');
-    // res.setHeader('Access-Control-Allow-Origin', '*'); // Handled by CORS middleware
+    res.setHeader('Access-Control-Allow-Origin', '*');
 
     // Send initial connection message
     res.write('data: {"type":"connected"}\n\n');
@@ -104,7 +85,7 @@ app.use((err, req, res, next) => {
 app.listen(PORT, () => {
     console.log(`
 ╔═══════════════════════════════════════════════════════════╗
-║ 🏆 Sports Week Score App Server (API ONLY - CORS REFLECT v6) 🏆 ║
+║ 🏆 Sports Week Score App Server (API ONLY - AUTH FIX v2) 🏆 ║
 ╠═══════════════════════════════════════════════════════════╣
 ║  Server running at: http://localhost:${PORT}                 ║
 ║  API Base URL:      http://localhost:${PORT}/api             ║

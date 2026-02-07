@@ -12,7 +12,7 @@ export function useRealTimeUpdates(onUpdate) {
             eventSourceRef.current.close();
         }
 
-        const eventSource = new EventSource(`${API_BASE}/sse`, { withCredentials: true });
+        const eventSource = new EventSource(`${API_BASE}/sse`);
         eventSourceRef.current = eventSource;
 
         eventSource.onmessage = (event) => {

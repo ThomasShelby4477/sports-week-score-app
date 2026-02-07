@@ -1299,27 +1299,21 @@ a {
 .nav-arrow {
   display: flex;
   align-items: center;
-  gap: var(--space-sm);
-  background: rgba(15, 23, 42, 0.8);
-  border: 1px solid var(--accent);
-  color: var(--text-cyan);
+  gap: var(--space-xs);
+  background: rgba(30, 41, 59, 0.9);
+  border: 1px solid var(--bg-elevated);
+  color: var(--text-primary);
   padding: var(--space-sm) var(--space-md);
-  border-radius: 4px;
-  font-family: var(--font-pixel);
-  font-size: 0.6rem;
-  letter-spacing: 1px;
-  text-transform: uppercase;
+  border-radius: var(--radius-md);
+  font-size: 0.75rem;
   cursor: pointer;
   transition: all var(--transition-fast);
-  box-shadow: 0 0 5px rgba(34, 211, 238, 0.2);
 }
 
 .nav-arrow:hover {
-  background: rgba(34, 211, 238, 0.15);
-  border-color: var(--gold);
-  color: var(--gold);
-  box-shadow: 0 0 10px rgba(251, 191, 36, 0.4);
-  transform: translateY(-2px);
+  background: var(--bg-elevated);
+  border-color: var(--accent);
+  color: var(--accent);
 }
 
 /* ===== Day Badge - Stadium Style ===== */

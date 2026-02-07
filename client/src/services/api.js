@@ -50,7 +50,7 @@ export const api = new ApiService();
 
 // SSE connection for live updates
 export function connectSSE(onMessage) {
-    const eventSource = new EventSource(`${API_BASE}/sse`, { withCredentials: true });
+    const eventSource = new EventSource(`${API_BASE}/sse`);
 
     eventSource.onmessage = (event) => {
         try {

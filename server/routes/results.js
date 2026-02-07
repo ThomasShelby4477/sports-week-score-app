@@ -4,6 +4,7 @@ import { authenticateToken } from '../middleware/auth.js';
 import { requireOrganiser } from '../middleware/rbac.js';
 import { logActivity } from '../utils/logger.js';
 import { broadcast } from '../index.js';
+import { cache } from '../utils/cache.js';
 
 const router = Router();
 
@@ -103,6 +104,8 @@ router.post('/', authenticateToken, requireOrganiser, async (req, res) => {
         // Broadcast update to all connected clients
         broadcast({ type: 'result_added', event_id });
 
+        cache.clear(); // Invalidate cache
+
         res.status(201).json({ id: result.rows[0].id });
     } catch (error) {
         console.error('Error adding result:', error);
@@ -136,6 +139,7 @@ router.put('/:id', authenticateToken, requireOrganiser, async (req, res) => {
             `Updated result for ${participant_name || existing.participant_name}`);
 
         broadcast({ type: 'result_updated', event_id: existing.event_id });
+        cache.clear();
         res.json({ message: 'Result updated' });
     } catch (error) {
         console.error('Error updating result:', error);
@@ -167,6 +171,7 @@ router.delete('/:id', authenticateToken, requireOrganiser, async (req, res) => {
             `Deleted result for ${existing.participant_name}`);
 
         broadcast({ type: 'result_deleted', event_id: existing.event_id });
+        cache.clear();
         res.json({ message: 'Result deleted' });
     } catch (error) {
         console.error('Error deleting result:', error);
@@ -210,6 +215,7 @@ router.post('/match', authenticateToken, requireOrganiser, async (req, res) => {
             `Added match for event ${event_id}`);
 
         broadcast({ type: 'match_added', event_id });
+        cache.clear();
         res.status(201).json({ id: result.rows[0].id });
     } catch (error) {
         console.error('Error adding match:', error);
@@ -318,6 +324,7 @@ router.put('/match/:id', authenticateToken, requireOrganiser, async (req, res) =
             `Updated match ${req.params.id}`);
 
         broadcast({ type: 'match_updated', event_id: existing.event_id });
+        cache.clear();
         res.json({ message: 'Match updated' });
     } catch (error) {
         console.error('Error updating match:', error);
@@ -340,6 +347,7 @@ router.delete('/match/:id', authenticateToken, requireOrganiser, async (req, res
             `Deleted match ${req.params.id}`);
 
         broadcast({ type: 'match_deleted', event_id: existing.event_id });
+        cache.clear();
         res.json({ message: 'Match deleted' });
     } catch (error) {
         console.error('Error deleting match:', error);
@@ -362,6 +370,7 @@ router.put('/event/:eventId/status', authenticateToken, requireOrganiser, async 
             `Changed event status to ${status}`);
 
         broadcast({ type: 'event_status_changed', event_id: req.params.eventId });
+        cache.clear();
         res.json({ message: 'Event status updated' });
     } catch (error) {
         console.error('Error updating event status:', error);

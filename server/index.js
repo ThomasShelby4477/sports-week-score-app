@@ -21,17 +21,31 @@ const PORT = process.env.PORT || 3001;
 app.set('trust proxy', 1);
 
 // Middleware
-app.use(cors({
-    origin: ['http://localhost:5173', 'http://localhost:3000', 'https://sports-week-score-app.vercel.app', process.env.FRONTEND_URL].filter(Boolean),
-    credentials: true
-}));
-
-// Handle preflight requests for all routes
-app.options('*', cors());
-
-// Debug Middleware: Log Origin
+// MANUAL CORS MIDDLEWARE (The Nuclear Option)
 app.use((req, res, next) => {
-    console.log(`[${new Date().toISOString()}] ${req.method} ${req.url} - Origin: ${req.headers.origin}`);
+    const origin = req.headers.origin;
+    const allowedOrigins = [
+        'http://localhost:5173',
+        'http://localhost:3000',
+        'https://sports-week-score-app.vercel.app',
+        process.env.FRONTEND_URL
+    ].filter(Boolean);
+
+    // Debug Log (At the very top)
+    console.log(`[${new Date().toISOString()}] ${req.method} ${req.url} - Origin: ${origin}`);
+
+    if (allowedOrigins.includes(origin)) {
+        res.setHeader('Access-Control-Allow-Origin', origin);
+        res.setHeader('Access-Control-Allow-Credentials', 'true');
+        res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
+        res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Accept, Cookie');
+    }
+
+    // Handle Preflight
+    if (req.method === 'OPTIONS') {
+        return res.sendStatus(200);
+    }
+
     next();
 });
 app.use(express.json());
@@ -94,7 +108,7 @@ app.use((err, req, res, next) => {
 app.listen(PORT, () => {
     console.log(`
 ╔═══════════════════════════════════════════════════════════╗
-║ 🏆 Sports Week Score App Server (API ONLY - CORS DEBUG v4) 🏆 ║
+║ 🏆 Sports Week Score App Server (API ONLY - CORS MANUAL v5) 🏆 ║
 ╠═══════════════════════════════════════════════════════════╣
 ║  Server running at: http://localhost:${PORT}                 ║
 ║  API Base URL:      http://localhost:${PORT}/api             ║

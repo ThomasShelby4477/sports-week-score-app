@@ -4,7 +4,7 @@ const JWT_SECRET = process.env.JWT_SECRET || 'sports-week-2026-secret-key';
 
 // Middleware to verify JWT token
 export function authenticateToken(req, res, next) {
-    const token = req.cookies?.token || req.headers.authorization?.split(' ')[1];
+    const token = req.cookies?.auth_token || req.headers.authorization?.split(' ')[1];
 
     if (!token) {
         return res.status(401).json({ error: 'Authentication required' });
@@ -21,7 +21,7 @@ export function authenticateToken(req, res, next) {
 
 // Optional authentication - doesn't fail if no token, but attaches user if present
 export function optionalAuth(req, res, next) {
-    const token = req.cookies?.token || req.headers.authorization?.split(' ')[1];
+    const token = req.cookies?.auth_token || req.headers.authorization?.split(' ')[1];
 
     if (token) {
         try {

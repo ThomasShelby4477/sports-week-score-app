@@ -32,9 +32,9 @@ router.post('/login', async (req, res) => {
         // Log login activity
         logActivity(user.id, 'LOGIN', 'user', user.id, `User ${user.username} logged in`);
 
-        res.cookie('token', token, {
+        res.cookie('auth_token', token, {
             httpOnly: true,
-            secure: true, // Always true for cross-site (Render requires https)
+            secure: true, // Required for cross-site (Render->Vercel)
             sameSite: 'none', // Required for cross-site
             maxAge: 24 * 60 * 60 * 1000 // 24 hours
         });
@@ -57,7 +57,11 @@ router.post('/login', async (req, res) => {
 // Logout
 router.post('/logout', authenticateToken, (req, res) => {
     logActivity(req.user.id, 'LOGOUT', 'user', req.user.id, `User ${req.user.username} logged out`);
-    res.clearCookie('token');
+    res.clearCookie('auth_token', {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'none'
+    });
     res.json({ message: 'Logged out successfully' });
 });
 

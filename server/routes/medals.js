@@ -1,11 +1,18 @@
 import { Router } from 'express';
 import pool from '../db/index.js';
+import { cache } from '../utils/cache.js';
 
 const router = Router();
 
 // Get all individual medal winners with sport/event info
 router.get('/winners', async (req, res) => {
     try {
+        const cachedKey = 'medal_winners';
+        const cachedData = cache.get(cachedKey);
+        if (cachedData) {
+            return res.json(cachedData);
+        }
+
         const result = await pool.query(`
             SELECT 
                 r.id,
@@ -26,11 +33,14 @@ router.get('/winners', async (req, res) => {
         `);
 
         const winners = result.rows;
-        res.json({
+        const responseData = {
             gold: winners.filter(w => w.position === 1),
             silver: winners.filter(w => w.position === 2),
             bronze: winners.filter(w => w.position === 3)
-        });
+        };
+
+        cache.set(cachedKey, responseData);
+        res.json(responseData);
     } catch (error) {
         console.error('Error fetching winners:', error);
         res.status(500).json({ error: 'Failed to fetch winners' });
@@ -40,6 +50,12 @@ router.get('/winners', async (req, res) => {
 // Get overall medal tally by department
 router.get('/', async (req, res) => {
     try {
+        const cachedKey = 'medal_tally';
+        const cachedData = cache.get(cachedKey);
+        if (cachedData) {
+            return res.json(cachedData);
+        }
+
         const result = await pool.query(`
             SELECT 
                 d.id,
@@ -55,6 +71,7 @@ router.get('/', async (req, res) => {
             ORDER BY gold DESC, silver DESC, bronze DESC, d.name ASC
         `);
 
+        cache.set(cachedKey, result.rows);
         res.json(result.rows);
     } catch (error) {
         console.error('Error fetching medal tally:', error);

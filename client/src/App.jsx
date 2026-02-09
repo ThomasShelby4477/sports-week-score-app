@@ -8,6 +8,7 @@ import Login from './pages/Login';
 import AdminDashboard from './pages/AdminDashboard';
 import OrganiserPanel from './pages/OrganiserPanel';
 import ProtectedRoute from './components/ProtectedRoute';
+import { Analytics } from '@vercel/analytics/react';
 
 function App() {
     return (
@@ -37,6 +38,7 @@ function App() {
                         />
                     </Route>
                 </Routes>
+                <Analytics />
             </BrowserRouter>
         </AuthProvider>
     );

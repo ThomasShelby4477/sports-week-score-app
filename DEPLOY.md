@@ -42,6 +42,32 @@ Render allows long-running Node.js servers for free, perfect for our SSE logic.
 
 ---
 
+## Phase 2.5: Scaling for High Traffic (500-600 Users)
+
+> **⚠️ CRITICAL:** The Free Tier of Render and Neon WILL crashed under load. You must do the following to handle 600 concurrent users.
+
+1.  **Upgrade Render Service**:
+    -   Go to your Render Dashboard -> Select your Web Service.
+    -   Click **Settings** -> **Instance Type**.
+    -   Upgrade to **Starter ($7/mo)** or **Standard**.
+    -   *Why?* The Free tier cuts off connections after ~50 users. You need the paid tier to keep 600 sockets open.
+
+2.  **Use Neon Connection Pooling**:
+    -   Go to your **Neon Dashboard**.
+    -   Find your **Connection Details**.
+    -   Click the **Pooled connection** checkbox (or look for the URL containing `.pooler`).
+    -   Copy this new URL.
+    -   Go to **Render** -> **Environment Variables**.
+    -   Update `DATABASE_URL` with this new Pooled URL.
+    -   *Why?* Neon Free allows only 100 direct connections. Pooling allows thousands of users to share those connections without crashing.
+
+3.  **Deploy the Caching Update**:
+    -   Ensure you have pushed the latest code (with `server/utils/cache.js`) to GitHub.
+    -   Render will auto-deploy.
+    -   *Why?* This reduces database load by 95% by serving data from memory.
+
+---
+
 ## Phase 3: Deploy Frontend (Vercel)
 
 Now we host the React UI on Vercel and point it to your Render backend.

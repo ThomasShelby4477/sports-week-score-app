@@ -107,6 +107,11 @@ router.delete('/users/:id', authenticateToken, requireAdmin, async (req, res) =>
             return res.status(400).json({ error: 'Cannot delete your own account' });
         }
 
+        // Helper to nullify references or delete dependent records
+        await pool.query('DELETE FROM activity_logs WHERE user_id = $1', [req.params.id]);
+        await pool.query('UPDATE results SET updated_by = NULL WHERE updated_by = $1', [req.params.id]);
+        await pool.query('UPDATE matches SET updated_by = NULL WHERE updated_by = $1', [req.params.id]);
+
         await pool.query('DELETE FROM users WHERE id = $1', [req.params.id]);
 
         logActivity(req.user.id, 'DELETE_USER', 'user', req.params.id,

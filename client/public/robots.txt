@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /admin
+Disallow: /organiser
+Disallow: /api/
+Sitemap: https://kreedascore.vercel.app/sitemap.xml

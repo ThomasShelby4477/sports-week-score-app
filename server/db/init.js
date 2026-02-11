@@ -31,8 +31,9 @@ async function initDatabase() {
         await pool.query(seed);
         console.log('✅ Seed data inserted successfully');
 
-        // Create admin user (Thomas / Cric@2026)
-        const adminPasswordHash = await bcrypt.hash('Cric@2026', 10);
+        // Create admin user
+        const adminPassword = process.env.ADMIN_PASSWORD || 'Cric@2026';
+        const adminPasswordHash = await bcrypt.hash(adminPassword, 10);
         await pool.query(`
             INSERT INTO users (username, password_hash, role, display_name)
             VALUES ($1, $2, 'admin', $3)
@@ -42,12 +43,12 @@ async function initDatabase() {
 
         // Create organiser accounts
         const organisers = [
-            { username: 'organiser1', password: 'Sports@2026', name: 'Sports Manager 1' },
-            { username: 'organiser2', password: 'Sports@2026', name: 'Sports Manager 2' },
-            { username: 'organiser3', password: 'Sports@2026', name: 'Sports Manager 3' },
-            { username: 'organiser4', password: 'Sports@2026', name: 'Sports Manager 4' },
-            { username: 'organiser5', password: 'Sports@2026', name: 'Sports Manager 5' },
-            { username: 'organiser6', password: 'Sports@2026', name: 'Sports Manager 6' }
+            { username: 'organiser1', password: process.env.ORGANISER_PASSWORD || 'Sports@2026', name: 'Sports Manager 1' },
+            { username: 'organiser2', password: process.env.ORGANISER_PASSWORD || 'Sports@2026', name: 'Sports Manager 2' },
+            { username: 'organiser3', password: process.env.ORGANISER_PASSWORD || 'Sports@2026', name: 'Sports Manager 3' },
+            { username: 'organiser4', password: process.env.ORGANISER_PASSWORD || 'Sports@2026', name: 'Sports Manager 4' },
+            { username: 'organiser5', password: process.env.ORGANISER_PASSWORD || 'Sports@2026', name: 'Sports Manager 5' },
+            { username: 'organiser6', password: process.env.ORGANISER_PASSWORD || 'Sports@2026', name: 'Sports Manager 6' }
         ];
 
         for (const org of organisers) {

@@ -9,11 +9,14 @@ import Login from './pages/Login';
 import AdminDashboard from './pages/AdminDashboard';
 import OrganiserPanel from './pages/OrganiserPanel';
 import ProtectedRoute from './components/ProtectedRoute';
+import GoogleAnalyticsTracker from './components/GoogleAnalyticsTracker';
+
 
 function App() {
     return (
         <AuthProvider>
             <BrowserRouter>
+                <GoogleAnalyticsTracker />
                 <Routes>
                     <Route path="/login" element={<Login />} />
                     <Route path="/" element={<Layout />}>

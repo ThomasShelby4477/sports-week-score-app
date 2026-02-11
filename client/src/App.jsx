@@ -10,6 +10,7 @@ import AdminDashboard from './pages/AdminDashboard';
 import OrganiserPanel from './pages/OrganiserPanel';
 import ProtectedRoute from './components/ProtectedRoute';
 import GoogleAnalyticsTracker from './components/GoogleAnalyticsTracker';
+import { SpeedInsights } from "@vercel/speed-insights/react";
 
 
 function App() {
@@ -43,6 +44,7 @@ function App() {
                 </Routes>
             </BrowserRouter>
             <Analytics />
+            <SpeedInsights />
         </AuthProvider>
     );
 }

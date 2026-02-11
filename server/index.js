@@ -28,12 +28,6 @@ app.use(helmet({
     contentSecurityPolicy: false // Disable CSP for API-only to avoid blocking legitimate requests
 }));
 
-// Prevent caching of sensitive API responses
-app.use((req, res, next) => {
-    res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private');
-    next();
-});
-
 // Rate Limiting
 const apiLimiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
@@ -51,10 +45,8 @@ const authLimiter = rateLimit({
 
 // Middleware
 app.use(cors({
-    origin: ['https://kreedascore.vercel.app', 'http://localhost:5173', 'http://localhost:3000'].filter(Boolean),
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization']
+    origin: ['http://localhost:5173', 'http://localhost:3000', 'https://sports-week-score-app.vercel.app', process.env.FRONTEND_URL].filter(Boolean),
+    credentials: true
 }));
 app.use(express.json());
 app.use(cookieParser());
@@ -113,10 +105,7 @@ app.get('/api/health', (req, res) => {
 // Error handler
 app.use((err, req, res, next) => {
     console.error('Server error:', err);
-    res.status(500).json({
-        error: 'Internal server error',
-        message: process.env.NODE_ENV === 'development' ? err.message : undefined
-    });
+    res.status(500).json({ error: 'Internal server error' });
 });
 
 app.listen(PORT, () => {

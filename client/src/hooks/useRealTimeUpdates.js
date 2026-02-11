@@ -19,8 +19,12 @@ export function useRealTimeUpdates(onUpdate) {
             try {
                 const data = JSON.parse(event.data);
                 if (data.type !== 'connected') {
-                    // Trigger refresh on any update
-                    onUpdate(data);
+                    // Add random jitter (0-2000ms) to prevent thundering herd
+                    // This spreads out the requests so the first one repopulates the cache
+                    const jitter = Math.floor(Math.random() * 2000);
+                    setTimeout(() => {
+                        onUpdate(data);
+                    }, jitter);
                 }
             } catch (e) {
                 console.error('SSE parse error:', e);

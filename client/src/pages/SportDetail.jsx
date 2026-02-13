@@ -243,7 +243,7 @@ function SportDetail() {
                 justifyContent: 'center',
                 marginTop: 'var(--space-lg)'
             }}>
-                Developed by Vaibhav Yadav
+                <a href="https://www.linkedin.com/in/vaibhav082004" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none' }}>Developed by Vaibhav Yadav</a>
             </div>
         </div>
     );

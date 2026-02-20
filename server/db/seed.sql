@@ -103,11 +103,11 @@ INSERT INTO events (sport_id, name, category, event_type, status) VALUES
 (13, '70-80kg', 'boys', 'individual', 'upcoming'),
 (13, '80-90kg', 'boys', 'individual', 'upcoming'),
 (13, 'Above 90kg', 'boys', 'individual', 'upcoming'),
-(13, 'Below 60kg', 'girls', 'individual', 'upcoming'),
+(13, 'Under 50kg', 'girls', 'individual', 'upcoming'),
+(13, '50-60kg', 'girls', 'individual', 'upcoming'),
 (13, '60-70kg', 'girls', 'individual', 'upcoming'),
 (13, '70-80kg', 'girls', 'individual', 'upcoming'),
-(13, '80-90kg', 'girls', 'individual', 'upcoming'),
-(13, 'Above 90kg', 'girls', 'individual', 'upcoming');
+(13, 'Above 80kg', 'girls', 'individual', 'upcoming');
 
 -- Events for Esports (Valorant and BGMI - Mixed)
 INSERT INTO events (sport_id, name, category, event_type, status) VALUES 

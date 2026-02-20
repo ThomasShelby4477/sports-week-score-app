@@ -72,7 +72,7 @@ router.get('/:id', async (req, res) => {
 
         // Get all events for this sport
         const eventsResult = await pool.query(`
-            SELECT * FROM events WHERE sport_id = $1 ORDER BY category, name
+            SELECT * FROM events WHERE sport_id = $1 ORDER BY category, id
         `, [sportId]);
 
         // Get results for each event

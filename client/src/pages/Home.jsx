@@ -147,7 +147,7 @@ function Home() {
                 padding: 'var(--space-md)',
                 borderTop: '1px solid var(--bg-elevated)'
             }}>
-                <a href="https://www.linkedin.com/in/vaibhav082004" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none' }}>Developed by Vaibhav Yadav</a>
+                <a className="cursor-pointer" href="https://www.linkedin.com/in/vaibhav082004" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none' }}>Developed by Vaibhav Yadav</a>
             </div>
         </div>
     );

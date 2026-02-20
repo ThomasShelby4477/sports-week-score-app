@@ -23,8 +23,8 @@ ON CONFLICT DO NOTHING;
 -- Insert Sports - Day 2
 INSERT INTO sports (name, day, icon, has_gender_categories, boys_only, girls_only) VALUES 
 ('Badminton', 2, '🏸', TRUE, FALSE, FALSE),
-('Chess', 2, '♟️', FALSE, FALSE, FALSE),
-('Carrom', 2, '🎱', FALSE, FALSE, FALSE),
+('Chess', 2, '♟️', TRUE, FALSE, FALSE),
+('Carrom', 2, '🎱', TRUE, FALSE, FALSE),
 ('Volleyball', 2, '🏐', TRUE, FALSE, FALSE),
 ('Table Tennis', 2, '🏓', TRUE, FALSE, FALSE),
 ('Arm Wrestling', 2, '💪', TRUE, FALSE, FALSE),
@@ -76,13 +76,15 @@ INSERT INTO events (sport_id, name, category, event_type, status) VALUES
 (8, 'Badminton Doubles', 'boys', 'team', 'upcoming'),
 (8, 'Badminton Doubles', 'girls', 'team', 'upcoming');
 
--- Events for Chess (Mixed - treated as match system)
+-- Events for Chess (Boys & Girls)
 INSERT INTO events (sport_id, name, category, event_type, status) VALUES 
-(9, 'Chess', 'mixed', 'team', 'upcoming');
+(9, 'Chess', 'boys', 'team', 'upcoming'),
+(9, 'Chess', 'girls', 'team', 'upcoming');
 
--- Events for Carrom (Doubles only - Mixed)
+-- Events for Carrom (Boys & Girls - Doubles)
 INSERT INTO events (sport_id, name, category, event_type, status) VALUES 
-(10, 'Carrom Doubles', 'mixed', 'team', 'upcoming');
+(10, 'Carrom Doubles', 'boys', 'team', 'upcoming'),
+(10, 'Carrom Doubles', 'girls', 'team', 'upcoming');
 
 -- Events for Volleyball
 INSERT INTO events (sport_id, name, category, event_type, status) VALUES 
@@ -94,10 +96,16 @@ INSERT INTO events (sport_id, name, category, event_type, status) VALUES
 (12, 'Table Tennis Doubles', 'boys', 'team', 'upcoming'),
 (12, 'Table Tennis Doubles', 'girls', 'team', 'upcoming');
 
--- Events for Arm Wrestling
+-- Events for Arm Wrestling (Weight categories)
 INSERT INTO events (sport_id, name, category, event_type, status) VALUES 
-(13, 'Arm Wrestling', 'boys', 'individual', 'upcoming'),
-(13, 'Arm Wrestling', 'girls', 'individual', 'upcoming');
+(13, 'Below 60kg', 'boys', 'individual', 'upcoming'),
+(13, '60-70kg', 'boys', 'individual', 'upcoming'),
+(13, '70-80kg', 'boys', 'individual', 'upcoming'),
+(13, 'Above 80kg', 'boys', 'individual', 'upcoming'),
+(13, 'Below 60kg', 'girls', 'individual', 'upcoming'),
+(13, '60-70kg', 'girls', 'individual', 'upcoming'),
+(13, '70-80kg', 'girls', 'individual', 'upcoming'),
+(13, 'Above 80kg', 'girls', 'individual', 'upcoming');
 
 -- Events for Esports (Valorant and BGMI - Mixed)
 INSERT INTO events (sport_id, name, category, event_type, status) VALUES 

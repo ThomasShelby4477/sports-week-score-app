@@ -82,6 +82,14 @@ function Home() {
                                     animation: 'blink 1s infinite'
                                 }}>● LIVE</span>
                             )}
+                            {sport.status === 'completed' && (
+                                <span style={{
+                                    marginLeft: 'auto',
+                                    color: 'white',
+                                    fontSize: '0.5rem',
+                                    fontWeight: 'bold'
+                                }}>OVER</span>
+                            )}
                         </Link>
                     ))}
                 </div>
@@ -117,6 +125,14 @@ function Home() {
                                     animation: 'blink 1s infinite'
                                 }}>● LIVE</span>
                             )}
+                            {sport.status === 'completed' && (
+                                <span style={{
+                                    marginLeft: 'auto',
+                                    color: 'white',
+                                    fontSize: '0.5rem',
+                                    fontWeight: 'bold'
+                                }}>OVER</span>
+                            )}
                         </Link>
                     ))}
                 </div>
@@ -131,7 +147,7 @@ function Home() {
                 padding: 'var(--space-md)',
                 borderTop: '1px solid var(--bg-elevated)'
             }}>
-                Developed by Vaibhav Yadav
+                <a className="cursor-pointer" href="https://www.linkedin.com/in/vaibhav082004" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none' }}>Developed by Vaibhav Yadav</a>
             </div>
         </div>
     );

@@ -4,11 +4,19 @@ import { authenticateToken } from '../middleware/auth.js';
 import { requireAdmin } from '../middleware/rbac.js';
 import { logActivity } from '../utils/logger.js';
 
+import { cache } from '../utils/cache.js';
+
 const router = Router();
 
 // Get all sports grouped by day
 router.get('/', async (req, res) => {
     try {
+        const cachedParams = 'all_sports';
+        const cachedData = cache.get(cachedParams);
+        if (cachedData) {
+            return res.json(cachedData);
+        }
+
         const result = await pool.query(`
             SELECT 
                 s.*,
@@ -34,7 +42,10 @@ router.get('/', async (req, res) => {
         const day1 = sportsWithStatus.filter(s => s.day === 1);
         const day2 = sportsWithStatus.filter(s => s.day === 2);
 
-        res.json({ day1, day2 });
+        const responseData = { day1, day2 };
+        cache.set(cachedParams, responseData);
+
+        res.json(responseData);
     } catch (error) {
         console.error('Error fetching sports:', error);
         res.status(500).json({ error: 'Failed to fetch sports' });
@@ -44,17 +55,25 @@ router.get('/', async (req, res) => {
 // Get single sport with all events and results
 router.get('/:id', async (req, res) => {
     try {
-        const sportResult = await pool.query('SELECT * FROM sports WHERE id = $1', [req.params.id]);
+        const sportId = req.params.id;
+        const cachedKey = `sport_${sportId}`;
+        const cachedData = cache.get(cachedKey);
+        if (cachedData) {
+            return res.json(cachedData);
+        }
+
+        const sportResult = await pool.query('SELECT * FROM sports WHERE id = $1', [sportId]);
         const sport = sportResult.rows[0];
 
         if (!sport) {
+            // Don't cache 404s
             return res.status(404).json({ error: 'Sport not found' });
         }
 
         // Get all events for this sport
         const eventsResult = await pool.query(`
-            SELECT * FROM events WHERE sport_id = $1 ORDER BY category, name
-        `, [req.params.id]);
+            SELECT * FROM events WHERE sport_id = $1 ORDER BY category, id
+        `, [sportId]);
 
         // Get results for each event
         const eventsWithResults = await Promise.all(eventsResult.rows.map(async event => {
@@ -95,14 +114,17 @@ router.get('/:id', async (req, res) => {
         const girlsEvents = eventsWithResults.filter(e => e.category === 'girls');
         const mixedEvents = eventsWithResults.filter(e => e.category === 'mixed');
 
-        res.json({
+        const responseData = {
             sport,
             events: {
                 boys: boysEvents,
                 girls: girlsEvents,
                 mixed: mixedEvents
             }
-        });
+        };
+
+        cache.set(cachedKey, responseData);
+        res.json(responseData);
     } catch (error) {
         console.error('Error fetching sport:', error);
         res.status(500).json({ error: 'Failed to fetch sport' });

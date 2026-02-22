@@ -5,6 +5,7 @@ import { authenticateToken } from '../middleware/auth.js';
 import { requireAdmin, requireOrganiser } from '../middleware/rbac.js';
 import { logActivity, getActivityLogs } from '../utils/logger.js';
 import { broadcast } from '../index.js';
+import { cache } from '../utils/cache.js';
 
 const router = Router();
 
@@ -106,6 +107,11 @@ router.delete('/users/:id', authenticateToken, requireAdmin, async (req, res) =>
             return res.status(400).json({ error: 'Cannot delete your own account' });
         }
 
+        // Helper to nullify references or delete dependent records
+        await pool.query('DELETE FROM activity_logs WHERE user_id = $1', [req.params.id]);
+        await pool.query('UPDATE results SET updated_by = NULL WHERE updated_by = $1', [req.params.id]);
+        await pool.query('UPDATE matches SET updated_by = NULL WHERE updated_by = $1', [req.params.id]);
+
         await pool.query('DELETE FROM users WHERE id = $1', [req.params.id]);
 
         logActivity(req.user.id, 'DELETE_USER', 'user', req.params.id,
@@ -146,6 +152,7 @@ router.post('/departments', authenticateToken, requireAdmin, async (req, res) =>
         logActivity(req.user.id, 'CREATE_DEPARTMENT', 'department', result.rows[0].id,
             `Created department: ${name}`);
 
+        cache.clear();
         res.status(201).json({ id: result.rows[0].id, name, short_code });
     } catch (error) {
         console.error('Error creating department:', error);
@@ -174,6 +181,7 @@ router.put('/departments/:id', authenticateToken, requireAdmin, async (req, res)
         logActivity(req.user.id, 'UPDATE_DEPARTMENT', 'department', req.params.id,
             `Updated department: ${name || dept.name}`);
 
+        cache.clear();
         res.json({ message: 'Department updated' });
     } catch (error) {
         console.error('Error updating department:', error);
@@ -195,6 +203,7 @@ router.delete('/departments/:id', authenticateToken, requireAdmin, async (req, r
         logActivity(req.user.id, 'DELETE_DEPARTMENT', 'department', req.params.id,
             `Deleted department: ${dept.name}`);
 
+        cache.clear();
         res.json({ message: 'Department deleted' });
     } catch (error) {
         console.error('Error deleting department:', error);
@@ -248,6 +257,7 @@ router.post('/events', authenticateToken, requireAdmin, async (req, res) => {
         logActivity(req.user.id, 'CREATE_EVENT', 'event', result.rows[0].id,
             `Created event: ${name} (${category})`);
 
+        cache.clear();
         res.status(201).json({ id: result.rows[0].id });
     } catch (error) {
         console.error('Error creating event:', error);
@@ -311,6 +321,7 @@ router.put('/sports/:id/visibility', authenticateToken, requireAdmin, async (req
         // Broadcast visibility change to all clients
         broadcast({ type: 'visibility_changed', sport_id: req.params.id });
 
+        cache.clear();
         res.json({
             message: 'Visibility updated',
             fixtures_visible: updatedSport.fixtures_visible,

@@ -82,6 +82,14 @@ function Home() {
                                     animation: 'blink 1s infinite'
                                 }}>● LIVE</span>
                             )}
+                            {sport.status === 'completed' && (
+                                <span style={{
+                                    marginLeft: 'auto',
+                                    color: 'white',
+                                    fontSize: '0.5rem',
+                                    fontWeight: 'bold'
+                                }}>OVER</span>
+                            )}
                         </Link>
                     ))}
                 </div>
@@ -116,6 +124,14 @@ function Home() {
                                     fontSize: '0.5rem',
                                     animation: 'blink 1s infinite'
                                 }}>● LIVE</span>
+                            )}
+                            {sport.status === 'completed' && (
+                                <span style={{
+                                    marginLeft: 'auto',
+                                    color: 'white',
+                                    fontSize: '0.5rem',
+                                    fontWeight: 'bold'
+                                }}>OVER</span>
                             )}
                         </Link>
                     ))}
